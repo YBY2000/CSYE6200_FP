@@ -2,7 +2,7 @@
   <div>
 
     <div class="card" style="line-height: 30px">
-      <div>Welcome，{{ user.name }} Hope you enjoy your day！</div>
+      <div>Welcome，<span style="color: royalblue">{{ user.username }}</span>. Hope you enjoy your day！</div>
     </div>
 
   </div>
