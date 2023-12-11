@@ -1,8 +1,10 @@
 package com.example.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Result;
 import com.example.common.RoleEnum;
 import com.example.entity.Account;
+import com.example.entity.Student;
 import com.example.service.AdminService;
 import com.example.service.StudentService;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,6 @@ public class WebController {
     @PostMapping("/login")
     public Result login(@RequestBody Account account) {
         Account dbAccount;
-        System.out.println(account.getRole());
         if (RoleEnum.ADMIN.name().equals(account.getRole())){
             // Admin Login
             dbAccount = adminService.login(account);
@@ -42,6 +43,23 @@ public class WebController {
             return Result.error("Invalid Role!");
         }
         return Result.success(dbAccount);
+    }
+
+    /**
+     * Login request API
+     */
+    @PostMapping("/signup")
+    public Result signup(@RequestBody Student student) {
+        if (ObjectUtil.isEmpty(student.getUsername()) ||
+                ObjectUtil.isEmpty(student.getPassword()) ||
+                ObjectUtil.isEmpty(student.getLast_name()) ||
+                ObjectUtil.isEmpty(student.getFirst_name()) ||
+                ObjectUtil.isEmpty(student.getEmail()) ||
+                ObjectUtil.isEmpty(student.getGender())){
+            return Result.error("Fill in all area!");
+        }
+        studentService.signup(student);
+;        return Result.success();
     }
 
 }

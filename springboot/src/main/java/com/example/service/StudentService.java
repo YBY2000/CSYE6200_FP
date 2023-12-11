@@ -1,8 +1,9 @@
 package com.example.service;
 
+import com.example.common.RoleEnum;
 import com.example.entity.Account;
+import com.example.entity.Student;
 import com.example.exception.CustomException;
-import com.example.mapper.AdminMapper;
 import com.example.mapper.StudentMapper;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +32,21 @@ public class StudentService {
 
         // login successfully
         return dbStudent;
+    }
+
+    public void signup(Student student) {
+        Student dbStudent1 = studentMapper.selectByEmail(student.getEmail());
+        if (dbStudent1 != null) {
+            // account (username) already exist
+            throw new CustomException("This email has already exists!");
+        }
+        Student dbStudent2 = studentMapper.selectByUsername(student.getUsername());
+        if (dbStudent2 != null) {
+            // account (username) already exist
+            throw new CustomException("Username already exists!");
+        }
+        student.setAvatar("vue/src/assets/imgs/avatar.png");
+        student.setRole(RoleEnum.STUDENT.name());
+        studentMapper.insert(student);
     }
 }

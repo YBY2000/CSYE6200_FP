@@ -27,7 +27,7 @@
             <el-button type="primary" style="width: 100%" @click="login">LOGIN</el-button>
           </el-form-item>
           <div class="login_goSignUp">
-            Have no account? Go <a href="/register" style="color: blue;">SIGN UP</a>
+            Have no account? Go <a href="/signup" style="color: blue;">SIGN UP</a>
           </div>
         </el-form>
       </div>
