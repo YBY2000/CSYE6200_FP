@@ -17,7 +17,7 @@
           </el-form-item>
           <!-- login button-->
           <el-form-item>
-            <el-button type="primary" style="width: 100%" @click="login">LOGIN</el-button>
+            <el-button type="primary" style="width: 100%; margin-top: 20px" @click="login">LOGIN</el-button>
           </el-form-item>
           <div class="login_goSignUp">
             Have no account? Go <a href="/register" style="color: blue;">SIGN UP</a>
@@ -39,7 +39,8 @@
 }
 
 .login_form {
-  width: 60vh;
+  width: 18vw;
+  margin: 0 auto;
 }
 
 .login_container {
