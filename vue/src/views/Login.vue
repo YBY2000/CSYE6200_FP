@@ -3,15 +3,17 @@
     <div class="login_container">
       <div class="login_box">
         <div class="login_title">L O G I N</div>
-        <el-form :model="data.form" ref="formRef" :rules="rules">
+        <el-form :model="data.form" ref="formRef" :rules="rules" class="login_form">
           <!-- username-->
           <el-form-item label="Username" prop="username">
             <el-input prefix-icon="User" v-model="data.form.username" placeholder="Please enter username"/>
           </el-form-item>
           <!-- password-->
           <el-form-item label="Password" prop="password">
-            <el-input type="password" prefix-icon="Lock" show-password v-model="data.form.password"
-                      placeholder="Please enter password"/>
+            <el-input
+                type="password"
+                show-password prefix-icon="Lock" v-model="data.form.password"
+                placeholder="Please enter password"/>
           </el-form-item>
           <!-- login button-->
           <el-form-item>
@@ -34,6 +36,10 @@
   font-size: 24px;
   text-align: center;
   margin-bottom: 30px;
+}
+
+.login_form {
+  width: 60vh;
 }
 
 .login_container {
