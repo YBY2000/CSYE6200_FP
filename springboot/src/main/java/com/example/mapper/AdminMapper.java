@@ -3,7 +3,6 @@ package com.example.mapper;
 import com.example.entity.Admin;
 import org.apache.ibatis.annotations.Select;
 
-import javax.annotation.Resource;
 
 public interface AdminMapper {
 
