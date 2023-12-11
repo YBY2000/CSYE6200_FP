@@ -28,4 +28,8 @@ public class CourseService {
         List<Course> courseList = courseMapper.selectAll(courseNum, subject, campus);
         return PageInfo.of(courseList);
     }
+
+    public void add(Course course) {
+        courseMapper.insert(course);
+    }
 }

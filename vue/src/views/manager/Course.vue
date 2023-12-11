@@ -39,7 +39,7 @@
       <el-pagination
           v-model:current-page="data.pageNum"
           v-model:page-size="data.pageSize"
-          :page-sizes="[10, 20, 30, 50]"
+          :page-sizes="[5, 10, 20, 50]"
           :small="small"
           :disabled="disabled"
           :background="background"
@@ -55,43 +55,43 @@
           <el-form :model="data.form" label-width="100px" style="padding-right: 30px">
             <!-- Course Title-->
             <el-form-item label="Title">
-              <el-input v-model="data.form.name" autocomplete="off"/>
+              <el-input v-model="data.form.title" autocomplete="off"/>
             </el-form-item>
             <!-- Course Number-->
             <el-form-item label="Number">
-              <el-input v-model="data.form.name" autocomplete="off"/>
+              <el-input v-model="data.form.number" autocomplete="off"/>
             </el-form-item>
             <!-- Course Instructor-->
             <el-form-item label="Instructor">
-              <el-input v-model="data.form.name" autocomplete="off"/>
+              <el-input v-model="data.form.instructor" autocomplete="off"/>
             </el-form-item>
             <!-- Course Section-->
             <el-form-item label="Section">
-              <el-input v-model="data.form.name" autocomplete="off"/>
+              <el-input v-model="data.form.section" autocomplete="off"/>
             </el-form-item>
             <!-- Course Subject-->
             <el-form-item label="Subject">
-              <el-input v-model="data.form.name" autocomplete="off"/>
+              <el-input v-model="data.form.subject" autocomplete="off"/>
             </el-form-item>
             <!-- Campus -->
             <el-form-item label="Campus">
-              <el-input v-model="data.form.name" autocomplete="off"/>
+              <el-input v-model="data.form.campus" autocomplete="off"/>
             </el-form-item>
             <!-- Credit Hours -->
             <el-form-item label="Hours">
-              <el-input v-model="data.form.name" autocomplete="off"/>
+              <el-input v-model="data.form.hours" autocomplete="off"/>
             </el-form-item>
             <!-- Course Description-->
             <el-form-item label="Description">
-              <el-input v-model="data.form.name" autocomplete="off"/>
+              <el-input v-model="data.form.description" autocomplete="off"/>
             </el-form-item>
             <!-- Course Location -->
             <el-form-item label="Location">
-              <el-input v-model="data.form.name" autocomplete="off"/>
+              <el-input v-model="data.form.location" autocomplete="off"/>
             </el-form-item>
             <!-- Course Timetable -->
             <el-form-item label="Timetable">
-              <el-input v-model="data.form.name" autocomplete="off"/>
+              <el-input v-model="data.form.timetable" autocomplete="off"/>
             </el-form-item>
           </el-form>
           <template #footer>
@@ -119,6 +119,7 @@
 import {reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue';
 import request from "@/utils/request";
+import {ElMessage} from "element-plus";
 
 const small = ref(false)
 const background = ref(false)
@@ -176,6 +177,14 @@ const handleAdd = () => {
   data.isAddBoxVisible = true;
 }
 const saveCourse = () => {
-
+  request.post('/course/add', data.form).then(res => {
+    if (res.code === '200') {
+      ElMessage.success("Course Saved!");
+      data.isAddBoxVisible = false;
+      load();
+    } else {
+      ElMessage.error(res.msg);
+    }
+  })
 }
 </script>
