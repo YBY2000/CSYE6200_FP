@@ -10,7 +10,7 @@
 
     <div class="card">
       <div style="margin-bottom: 20px">
-        <el-button type="primary">Add</el-button>
+        <el-button type="primary" @click="handleAdd">Add</el-button>
       </div>
 
       <div>
@@ -49,6 +49,60 @@
           @current-change="handleCurrentChange"
       />
     </div>
+
+
+        <el-dialog width="35%" v-model="data.isAddBoxVisible" title="Add new course">
+          <el-form :model="data.form" label-width="100px" style="padding-right: 30px">
+            <!-- Course Title-->
+            <el-form-item label="Title">
+              <el-input v-model="data.form.name" autocomplete="off"/>
+            </el-form-item>
+            <!-- Course Number-->
+            <el-form-item label="Number">
+              <el-input v-model="data.form.name" autocomplete="off"/>
+            </el-form-item>
+            <!-- Course Instructor-->
+            <el-form-item label="Instructor">
+              <el-input v-model="data.form.name" autocomplete="off"/>
+            </el-form-item>
+            <!-- Course Section-->
+            <el-form-item label="Section">
+              <el-input v-model="data.form.name" autocomplete="off"/>
+            </el-form-item>
+            <!-- Course Subject-->
+            <el-form-item label="Subject">
+              <el-input v-model="data.form.name" autocomplete="off"/>
+            </el-form-item>
+            <!-- Campus -->
+            <el-form-item label="Campus">
+              <el-input v-model="data.form.name" autocomplete="off"/>
+            </el-form-item>
+            <!-- Credit Hours -->
+            <el-form-item label="Hours">
+              <el-input v-model="data.form.name" autocomplete="off"/>
+            </el-form-item>
+            <!-- Course Description-->
+            <el-form-item label="Description">
+              <el-input v-model="data.form.name" autocomplete="off"/>
+            </el-form-item>
+            <!-- Course Location -->
+            <el-form-item label="Location">
+              <el-input v-model="data.form.name" autocomplete="off"/>
+            </el-form-item>
+            <!-- Course Timetable -->
+            <el-form-item label="Timetable">
+              <el-input v-model="data.form.name" autocomplete="off"/>
+            </el-form-item>
+          </el-form>
+          <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="data.isAddBoxVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="saveCourse">
+              Save
+            </el-button>
+          </span>
+          </template>
+        </el-dialog>
   </div>
 </template>
 
@@ -96,7 +150,9 @@ const data = reactive({
   courseData: [],
   total: 0,
   pageNum: 1, // current page number
-  pageSize: 5 // current page size
+  pageSize: 5, // current page size
+  isAddBoxVisible: false,
+  form: {}
 })
 
 const load = () => {
@@ -114,6 +170,12 @@ const load = () => {
     data.total = res.data?.total || 0;
   })
 }
-// get the data
 load();
+
+const handleAdd = () => {
+  data.isAddBoxVisible = true;
+}
+const saveCourse = () => {
+
+}
 </script>
