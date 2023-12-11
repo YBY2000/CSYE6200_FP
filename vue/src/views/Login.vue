@@ -15,9 +15,16 @@
                 show-password prefix-icon="Lock" v-model="data.form.password"
                 placeholder="Please enter password"/>
           </el-form-item>
+          <!-- role -->
+          <el-form-item prop="role">
+            <el-radio-group v-model="data.form.role" style="margin: 10px auto">
+              <el-radio value="STUDENT" label="STUDENT" size="large">Student</el-radio>
+              <el-radio value="ADMIN" label="ADMIN" size="large">Admin</el-radio>
+            </el-radio-group>
+          </el-form-item>
           <!-- login button-->
           <el-form-item>
-            <el-button type="primary" style="width: 100%; margin-top: 20px" @click="login">LOGIN</el-button>
+            <el-button type="primary" style="width: 100%" @click="login">LOGIN</el-button>
           </el-form-item>
           <div class="login_goSignUp">
             Have no account? Go <a href="/register" style="color: blue;">SIGN UP</a>

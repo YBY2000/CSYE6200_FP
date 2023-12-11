@@ -8,7 +8,7 @@ public class Student extends Account {
     private String last_name;
     private String email;
     private String phone;
-    private int gender;
+    private String gender;
     private String avatar;
 
     public int getId() {
@@ -61,11 +61,11 @@ public class Student extends Account {
         this.phone = phone;
     }
 
-    public int getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

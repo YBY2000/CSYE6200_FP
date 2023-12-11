@@ -104,7 +104,6 @@
       </template>
     </el-dialog>
 
-    <el-button text @click="open">Click to open the Message Box</el-button>
   </div>
 </template>
 
