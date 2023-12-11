@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="card" style="margin-bottom: 10px">
-      <el-input v-model="data.name" style="width: 20vw" placeholder="Input the keyword" :prefix-icon="Search" />
-      <el-button style="margin-left: 10px" type="primary">Search</el-button>
-      <el-button style="margin: 0 10px" type="info">Reset</el-button>
+      <el-input v-model="data.courseNum" class="search_input" placeholder="by course No." :prefix-icon="Search"/>
+      <el-input v-model="data.subject" class="search_input" placeholder="by subject" :prefix-icon="Search"/>
+      <el-input v-model="data.campus" class="search_input" placeholder="by campus" :prefix-icon="Search"/>
+      <el-button style="margin-left: 10px" type="primary" @click="load">Search</el-button>
+      <el-button style="margin: 0 10px" type="info" @click="reset">Reset</el-button>
     </div>
 
     <div class="card">
@@ -13,17 +15,17 @@
 
       <div>
         <el-table :data="data.courseData" style="width: 100%">
-          <el-table-column fixed prop="number" label="Course Number" width="125" />
-          <el-table-column prop="title" label="Title" width="170" />
-          <el-table-column prop="instructor" label="Instructor" width="130" />
-          <el-table-column prop="section" label="Section" width="100" />
-          <el-table-column prop="subject" label="Subject" width="120" />
-          <el-table-column prop="campus" label="Campus" width="100" />
-          <el-table-column prop="hours" label="Hours" width="80" />
-          <el-table-column prop="description" label="Description" style="overflow: scroll" width="400" />
-          <el-table-column prop="location" label="Location" width="250" />
-          <el-table-column prop="timetable" label="Scheduled" width="200" />
-          <el-table-column fixed="right" label="Operation" width="200" >
+          <el-table-column fixed prop="number" label="Course Number" width="125"/>
+          <el-table-column prop="title" label="Title" width="170"/>
+          <el-table-column prop="instructor" label="Instructor" width="130"/>
+          <el-table-column prop="section" label="Section" width="100"/>
+          <el-table-column prop="subject" label="Subject" width="120"/>
+          <el-table-column prop="campus" label="Campus" width="100"/>
+          <el-table-column prop="hours" label="Hours" width="80"/>
+          <el-table-column prop="description" label="Description" style="overflow: scroll" width="400"/>
+          <el-table-column prop="location" label="Location" width="250"/>
+          <el-table-column prop="timetable" label="Scheduled" width="200"/>
+          <el-table-column fixed="right" label="Operation" width="200">
             <template #default="scope">
               <el-button type="primary" plain>Edit</el-button>
               <el-button type="danger" plain>Delete</el-button>
@@ -51,12 +53,17 @@
 </template>
 
 
-
+<style scoped>
+.search_input {
+  width: 10vw;
+  margin-right: 10px;
+}
+</style>
 
 
 <script setup>
-import { reactive, ref } from "vue";
-import { Search } from '@element-plus/icons-vue';
+import {reactive, ref} from "vue";
+import {Search} from '@element-plus/icons-vue';
 import request from "@/utils/request";
 
 const small = ref(false)
@@ -72,8 +79,20 @@ const handleCurrentChange = (pageNum) => {
   load();
 }
 
+const reset = () => {
+  data.keyword = "";
+  data.courseNum = "";
+  data.title = "";
+  data.instructor = "";
+  data.subject = "";
+  data.campus = "";
+  load();
+}
+
 const data = reactive({
-  name:'',
+  courseNum: '',
+  subject: '',
+  campus: '',
   courseData: [],
   total: 0,
   pageNum: 1, // current page number
@@ -81,10 +100,14 @@ const data = reactive({
 })
 
 const load = () => {
+  console.log("clicked")
   request.get('/course/selectPage', {
     params: {
       pageNum: data.pageNum,
       pageSize: data.pageSize,
+      courseNum: data.courseNum,
+      subject: data.subject,
+      campus: data.campus,
     }
   }).then(res => {
     data.courseData = res.data?.list || [];

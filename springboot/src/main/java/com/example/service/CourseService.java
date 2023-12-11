@@ -23,9 +23,9 @@ public class CourseService {
      * @return the list of data
      */
 
-    public PageInfo<Course> selectPage(Integer pageNum, Integer pageSize){
+    public PageInfo<Course> selectPage(Integer pageNum, Integer pageSize, String courseNum, String subject, String campus){
         PageHelper.startPage(pageNum, pageSize);
-        List<Course> courseList = courseMapper.selectAll();
+        List<Course> courseList = courseMapper.selectAll(courseNum, subject, campus);
         return PageInfo.of(courseList);
     }
 }
