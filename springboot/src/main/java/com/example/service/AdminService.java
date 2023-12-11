@@ -1,6 +1,6 @@
 package com.example.service;
 
-import com.example.entity.Admin;
+import com.example.entity.Account;
 import com.example.exception.CustomException;
 import com.example.mapper.AdminMapper;
 import org.springframework.stereotype.Service;
@@ -16,21 +16,19 @@ public class AdminService {
     /**
      * handle login service
      */
-    public Admin login(Admin admin){
-        Admin dbAdmin = adminMapper.selectByUsername(admin.getUsername());
-        System.out.println(dbAdmin);
-        if (dbAdmin == null) {
+    public Account login(Account account){
+        Account dbAccount = adminMapper.selectByUsername(account.getUsername());
+        System.out.println(dbAccount);
+        if (dbAccount == null) {
             // user not fount
-//            throw new CustomException(" Invalid username and/or password. ");
-            throw new CustomException(" no user ");
+            throw new CustomException(" Invalid username and/or password. ");
         }
         // check password
-        if (!admin.getPassword().equals(dbAdmin.getPassword())) {
-//            throw new CustomException(" Invalid username and/or password. ");
-            throw new CustomException(" Wrong password ");
+        if (!account.getPassword().equals(dbAccount.getPassword())) {
+            throw new CustomException(" Invalid username and/or password. ");
         }
 
         // login successfully
-        return dbAdmin;
+        return dbAccount;
     }
 }
