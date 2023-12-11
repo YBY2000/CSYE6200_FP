@@ -10,7 +10,7 @@
 
     <div class="card">
       <div style="margin-bottom: 20px">
-        <el-button type="primary" @click="handleAdd">Add</el-button>
+        <el-button type="primary" @click="showDialog">Add</el-button>
       </div>
 
       <div>
@@ -27,8 +27,8 @@
           <el-table-column prop="timetable" label="Scheduled" width="200"/>
           <el-table-column fixed="right" label="Operation" width="200">
             <template #default="scope">
-              <el-button type="primary" plain>Edit</el-button>
-              <el-button type="danger" plain>Delete</el-button>
+              <el-button type="primary" plain @click="handleEdit(scope.row)">Edit</el-button>
+              <el-button type="danger" plain @click="handleDelete(scope.row)">Delete</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -173,11 +173,17 @@ const load = () => {
 }
 load();
 
-const handleAdd = () => {
+const showDialog = () => {
   data.isAddBoxVisible = true;
 }
+
+// save data to database (include add and update)
 const saveCourse = () => {
-  request.post('/course/add', data.form).then(res => {
+  request.request({
+    url: data.form.id ? '/course/update' : '/course/add',
+    method: data.form.id ? 'PUT' : 'POST',
+    data: data.form
+  }).then(res => {
     if (res.code === '200') {
       ElMessage.success("Course Saved!");
       data.isAddBoxVisible = false;
@@ -187,4 +193,10 @@ const saveCourse = () => {
     }
   })
 }
+
+const handleEdit = (row) => {
+  data.form = JSON.parse(JSON.stringify(row));
+  data.isAddBoxVisible = true;
+}
+
 </script>

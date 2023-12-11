@@ -31,4 +31,10 @@ public class CourseController {
         return Result.success();
     }
 
+    @PutMapping("/update")
+    public Result update(@RequestBody Course course) {
+        courseService.updateById(course);
+        return Result.success();
+    }
+
 }
