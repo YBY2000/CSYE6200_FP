@@ -12,19 +12,19 @@
       </div>
 
       <div>
-        <el-table :data="data.courseData" style="width: 100%" height="250">
-          <el-table-column fixed prop="number" label="Course Number" width="130" />
-          <el-table-column fixed prop="title" label="Title" width="120" />
-          <el-table-column prop="instructor" label="Instructor" width="120" />
+        <el-table :data="data.courseData" style="width: 100%">
+          <el-table-column fixed prop="number" label="Course Number" width="125" />
+          <el-table-column prop="title" label="Title" width="170" />
+          <el-table-column prop="instructor" label="Instructor" width="130" />
           <el-table-column prop="section" label="Section" width="100" />
           <el-table-column prop="subject" label="Subject" width="120" />
           <el-table-column prop="campus" label="Campus" width="100" />
           <el-table-column prop="hours" label="Hours" width="80" />
-          <el-table-column prop="description" label="Description" width="300" />
-          <el-table-column prop="location" label="Location" width="200" />
-          <el-table-column prop="timetable" label="Scheduled" width="150" />
-          <el-table-column>
-            <template  #default="scope">
+          <el-table-column prop="description" label="Description" style="overflow: scroll" width="400" />
+          <el-table-column prop="location" label="Location" width="250" />
+          <el-table-column prop="timetable" label="Scheduled" width="200" />
+          <el-table-column fixed="right" label="Operation" width="200" >
+            <template #default="scope">
               <el-button type="primary" plain>Edit</el-button>
               <el-button type="danger" plain>Delete</el-button>
             </template>
@@ -35,14 +35,14 @@
 
     <div class="card">
       <el-pagination
-          v-model:current-page="currentPage"
-          v-model:page-size="pageSize"
+          v-model:current-page="data.pageNum"
+          v-model:page-size="data.pageSize"
           :page-sizes="[10, 20, 30, 50]"
           :small="small"
           :disabled="disabled"
           :background="background"
           layout="sizes, prev, pager, next"
-          :total="1000"
+          :total="data.total"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
       />
@@ -50,46 +50,47 @@
   </div>
 </template>
 
+
+
+
+
 <script setup>
 import { reactive, ref } from "vue";
 import { Search } from '@element-plus/icons-vue';
+import request from "@/utils/request";
 
-const currentPage = ref(10)
-const pageSize = ref(10)
 const small = ref(false)
 const background = ref(false)
 const disabled = ref(false)
 
-// const handleSizeChange = (val: number) => {
-//   console.log(`${val} items per page`)
-// }
-// const handleCurrentChange = (val: number) => {
-//   console.log(`current page: ${val}`)
-// }
+const handleSizeChange = (pageNum) => {
+  // reload the data when page size changed
+  load();
+}
+const handleCurrentChange = (pageNum) => {
+  // reload the data when page changed
+  load();
+}
 
 const data = reactive({
   name:'',
-  courseData: [
-    // {number:"6200", title:"java1"},
-    // {number:"6200", title:"java2"},
-    // {number:"6200", title:"java3"},
-    // {number:"6200", title:"java4"},
-    // {number:"6200", title:"java5"},
-    // {number:"6200", title:"java6"},
-    // {number:"6200", title:"java7"},
-    // {number:"6200", title:"java8"},
-    // {number:"6200", title:"java9"},
-    // {number:"6200", title:"java10"},
-    // {number:"6200", title:"java11"},
-    // {number:"6200", title:"java12"},
-    // {number:"6200", title:"java13"},
-    // {number:"6200", title:"java14"},
-    // {number:"6200", title:"java15"},
-    // {number:"6200", title:"java16"},
-    // {number:"6200", title:"java17"},
-    // {number:"6200", title:"java18"},
-    // {number:"6200", title:"java19"},
-    // {number:"6200", title:"java20"},
-  ],
+  courseData: [],
+  total: 0,
+  pageNum: 1, // current page number
+  pageSize: 5 // current page size
 })
+
+const load = () => {
+  request.get('/course/selectPage', {
+    params: {
+      pageNum: data.pageNum,
+      pageSize: data.pageSize,
+    }
+  }).then(res => {
+    data.courseData = res.data?.list || [];
+    data.total = res.data?.total || 0;
+  })
+}
+// get the data
+load();
 </script>
