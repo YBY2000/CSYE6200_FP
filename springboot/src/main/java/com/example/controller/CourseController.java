@@ -37,4 +37,26 @@ public class CourseController {
         return Result.success();
     }
 
+    /**
+     * use this pseudo delete normally
+     * @param id the data id
+     * @return succeed message
+     */
+    @PutMapping("/pseudo-delete/{id}")
+    public Result pseudoDelete(@PathVariable Integer id) {
+        courseService.pseudoDeleteById(id);
+        return Result.success();
+    }
+
+    /**
+     * permanently delete data, use it CAREFULLY!
+     * @param id the data id
+     * @return succeed message
+     */
+    @DeleteMapping("/delete/{id}")
+    public Result delete(@PathVariable Integer id) {
+        courseService.delete(id);
+        return Result.success();
+    }
+
 }

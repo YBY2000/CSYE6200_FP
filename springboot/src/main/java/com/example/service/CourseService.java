@@ -36,4 +36,12 @@ public class CourseService {
     public void updateById(Course course) {
         courseMapper.updateById(course);
     }
+
+    public void pseudoDeleteById(Integer id) {
+        courseMapper.pseudoDeleteById(id);
+    }
+
+    public void delete(Integer id) {
+        courseMapper.delete(id);
+    }
 }

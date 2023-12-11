@@ -28,7 +28,7 @@
           <el-table-column fixed="right" label="Operation" width="200">
             <template #default="scope">
               <el-button type="primary" plain @click="handleEdit(scope.row)">Edit</el-button>
-              <el-button type="danger" plain @click="handleDelete(scope.row)">Delete</el-button>
+              <el-button type="danger" plain @click="handleDelete(scope.row.id)">Delete</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -51,58 +51,60 @@
     </div>
 
 
-        <el-dialog width="35%" v-model="data.isAddBoxVisible" title="Add new course">
-          <el-form :model="data.form" label-width="100px" style="padding-right: 30px">
-            <!-- Course Title-->
-            <el-form-item label="Title">
-              <el-input v-model="data.form.title" autocomplete="off"/>
-            </el-form-item>
-            <!-- Course Number-->
-            <el-form-item label="Number">
-              <el-input v-model="data.form.number" autocomplete="off"/>
-            </el-form-item>
-            <!-- Course Instructor-->
-            <el-form-item label="Instructor">
-              <el-input v-model="data.form.instructor" autocomplete="off"/>
-            </el-form-item>
-            <!-- Course Section-->
-            <el-form-item label="Section">
-              <el-input v-model="data.form.section" autocomplete="off"/>
-            </el-form-item>
-            <!-- Course Subject-->
-            <el-form-item label="Subject">
-              <el-input v-model="data.form.subject" autocomplete="off"/>
-            </el-form-item>
-            <!-- Campus -->
-            <el-form-item label="Campus">
-              <el-input v-model="data.form.campus" autocomplete="off"/>
-            </el-form-item>
-            <!-- Credit Hours -->
-            <el-form-item label="Hours">
-              <el-input v-model="data.form.hours" autocomplete="off"/>
-            </el-form-item>
-            <!-- Course Description-->
-            <el-form-item label="Description">
-              <el-input v-model="data.form.description" autocomplete="off"/>
-            </el-form-item>
-            <!-- Course Location -->
-            <el-form-item label="Location">
-              <el-input v-model="data.form.location" autocomplete="off"/>
-            </el-form-item>
-            <!-- Course Timetable -->
-            <el-form-item label="Timetable">
-              <el-input v-model="data.form.timetable" autocomplete="off"/>
-            </el-form-item>
-          </el-form>
-          <template #footer>
+    <el-dialog width="35%" v-model="data.isAddBoxVisible" title="Add new course">
+      <el-form :model="data.form" label-width="100px" style="padding-right: 30px">
+        <!-- Course Title-->
+        <el-form-item label="Title">
+          <el-input v-model="data.form.title" autocomplete="off"/>
+        </el-form-item>
+        <!-- Course Number-->
+        <el-form-item label="Number">
+          <el-input v-model="data.form.number" autocomplete="off"/>
+        </el-form-item>
+        <!-- Course Instructor-->
+        <el-form-item label="Instructor">
+          <el-input v-model="data.form.instructor" autocomplete="off"/>
+        </el-form-item>
+        <!-- Course Section-->
+        <el-form-item label="Section">
+          <el-input v-model="data.form.section" autocomplete="off"/>
+        </el-form-item>
+        <!-- Course Subject-->
+        <el-form-item label="Subject">
+          <el-input v-model="data.form.subject" autocomplete="off"/>
+        </el-form-item>
+        <!-- Campus -->
+        <el-form-item label="Campus">
+          <el-input v-model="data.form.campus" autocomplete="off"/>
+        </el-form-item>
+        <!-- Credit Hours -->
+        <el-form-item label="Hours">
+          <el-input v-model="data.form.hours" autocomplete="off"/>
+        </el-form-item>
+        <!-- Course Description-->
+        <el-form-item label="Description">
+          <el-input v-model="data.form.description" autocomplete="off"/>
+        </el-form-item>
+        <!-- Course Location -->
+        <el-form-item label="Location">
+          <el-input v-model="data.form.location" autocomplete="off"/>
+        </el-form-item>
+        <!-- Course Timetable -->
+        <el-form-item label="Timetable">
+          <el-input v-model="data.form.timetable" autocomplete="off"/>
+        </el-form-item>
+      </el-form>
+      <template #footer>
           <span class="dialog-footer">
             <el-button @click="data.isAddBoxVisible = false">Cancel</el-button>
             <el-button type="primary" @click="saveCourse">
               Save
             </el-button>
           </span>
-          </template>
-        </el-dialog>
+      </template>
+    </el-dialog>
+
+    <el-button text @click="open">Click to open the Message Box</el-button>
   </div>
 </template>
 
@@ -119,7 +121,7 @@
 import {reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue';
 import request from "@/utils/request";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const small = ref(false)
 const background = ref(false)
@@ -199,4 +201,22 @@ const handleEdit = (row) => {
   data.isAddBoxVisible = true;
 }
 
+
+const handleDelete = (id) => {
+  ElMessageBox.confirm("Will permanently delete the course. Continue?", "Confirm", { type: 'warning' }).then(() => {
+    request.put('course/pseudo-delete/'+id).then(res => {
+      if (res.code === '200') {
+        ElMessage.success("Course Deleted!");
+        load();
+      } else {
+        ElMessage.error(res.msg);
+      }
+    })
+  }).catch(res => {
+    ElMessage({
+      type: 'info',
+      message: 'Delete Canceled'
+    })
+  })
+}
 </script>

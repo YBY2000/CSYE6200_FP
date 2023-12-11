@@ -12,6 +12,8 @@ public class Course {
     private String description;
     private String location;
     private String timetable;
+    private int status;
+
 
 
     public Integer getId() {
@@ -100,5 +102,13 @@ public class Course {
 
     public void setTimetable(String timetable) {
         this.timetable = timetable;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
