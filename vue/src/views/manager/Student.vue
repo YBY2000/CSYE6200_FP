@@ -1,9 +1,10 @@
 <template>
   <div>
     <div class="card" style="margin-bottom: 10px">
-      <el-input v-model="data.username" class="search_input" placeholder="search by username" :prefix-icon="Search"/>
-<!--      <el-input v-model="data.lastName" class="search_input" placeholder="search by last name" :prefix-icon="Search"/>-->
-      <el-input v-model="data.email" class="search_input" placeholder="search by email" :prefix-icon="Search"/>
+      <el-input v-model="data.username" class="search_input" placeholder="by username" :prefix-icon="Search"/>
+      <el-input v-model="data.firstName" class="search_input" placeholder="by first name" :prefix-icon="Search"/>
+      <el-input v-model="data.lastName" class="search_input" placeholder="by last name" :prefix-icon="Search"/>
+      <el-input v-model="data.email" class="search_input" placeholder="by email" :prefix-icon="Search"/>
       <el-button style="margin-left: 10px" type="primary" @click="load">Search</el-button>
       <el-button style="margin: 0 10px" type="info" @click="reset">Reset</el-button>
     </div>
@@ -48,53 +49,49 @@
     </div>
 
 
-    <el-dialog width="35%" v-model="data.isAddBoxVisible" title="Add new course">
+    <el-dialog width="35%" v-model="data.isAddBoxVisible" title="Add student account">
       <el-form :model="data.form" label-width="100px" style="padding-right: 30px">
-        <!-- Course Title-->
-        <el-form-item label="Title">
-          <el-input v-model="data.form.title" autocomplete="off"/>
+        <!-- Student Username-->
+        <el-form-item label="Username">
+          <el-input v-model="data.form.username" autocomplete="off"/>
         </el-form-item>
-        <!-- Course Number-->
-        <el-form-item label="Number">
-          <el-input v-model="data.form.number" autocomplete="off"/>
+        <!-- Student Password-->
+        <el-form-item label="Password">
+          <el-input show-password v-model="data.form.password" autocomplete="off"/>
         </el-form-item>
-        <!-- Course Instructor-->
-        <el-form-item label="Instructor">
-          <el-input v-model="data.form.instructor" autocomplete="off"/>
+        <!-- Student First Name-->
+        <el-form-item label="First Name">
+          <el-input v-model="data.form.firstName" autocomplete="off"/>
         </el-form-item>
-        <!-- Course Section-->
-        <el-form-item label="Section">
-          <el-input v-model="data.form.section" autocomplete="off"/>
+        <!-- Student Last Name-->
+        <el-form-item label="Last Name">
+          <el-input v-model="data.form.lastName" autocomplete="off"/>
         </el-form-item>
-        <!-- Course Subject-->
-        <el-form-item label="Subject">
-          <el-input v-model="data.form.subject" autocomplete="off"/>
+        <!-- Student Email-->
+        <el-form-item label="Email">
+          <el-input v-model="data.form.email" autocomplete="off"/>
         </el-form-item>
-        <!-- Campus -->
-        <el-form-item label="Campus">
-          <el-input v-model="data.form.campus" autocomplete="off"/>
+        <!-- Phone -->
+        <el-form-item label="Phone">
+          <el-input v-model="data.form.phone" autocomplete="off"/>
         </el-form-item>
-        <!-- Credit Hours -->
-        <el-form-item label="Hours">
-          <el-input v-model="data.form.hours" autocomplete="off"/>
+
+        <el-form-item label="Gender" prop="resource">
+          <el-radio-group v-model="data.form.gender">
+            <el-radio label="Male"/>
+            <el-radio label="Female"/>
+            <el-radio label="Other"/>
+          </el-radio-group>
         </el-form-item>
         <!-- Course Description-->
-        <el-form-item label="Description">
-          <el-input v-model="data.form.description" autocomplete="off"/>
-        </el-form-item>
-        <!-- Course Location -->
-        <el-form-item label="Location">
-          <el-input v-model="data.form.location" autocomplete="off"/>
-        </el-form-item>
-        <!-- Course Timetable -->
-        <el-form-item label="Timetable">
-          <el-input v-model="data.form.timetable" autocomplete="off"/>
+        <el-form-item label="Avatar">
+          <el-input v-model="data.form.avatar" autocomplete="off"/>
         </el-form-item>
       </el-form>
       <template #footer>
           <span class="dialog-footer">
             <el-button @click="data.isAddBoxVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="saveCourse">
+            <el-button type="primary" @click="saveStudent">
               Save
             </el-button>
           </span>
@@ -134,13 +131,16 @@ const handleCurrentChange = (pageNum) => {
 
 const reset = () => {
   data.username = "";
+  data.firstName = "";
+  data.lastName = "";
   data.email = "";
   load();
 }
 
 const data = reactive({
   username: '',
-  // lastName: '',
+  firstName: '',
+  lastName: '',
   email: '',
   studentData: [],
   total: 0,
@@ -157,7 +157,8 @@ const load = () => {
       pageSize: data.pageSize,
       username: data.username,
       email: data.email,
-      // lastName: data.lastName,
+      firstName: data.firstName,
+      lastName: data.lastName,
     }
   }).then(res => {
     data.studentData = res.data?.list || [];
@@ -171,14 +172,14 @@ const showDialog = () => {
 }
 
 // save data to database (include add and update)
-const saveCourse = () => {
+const saveStudent = () => {
   request.request({
-    url: data.form.id ? '/course/update' : '/course/add',
+    url: data.form.id ? '/student/update' : '/student/add',
     method: data.form.id ? 'PUT' : 'POST',
     data: data.form
   }).then(res => {
     if (res.code === '200') {
-      ElMessage.success("Course Saved!");
+      ElMessage.success("Student Account Saved!");
       data.isAddBoxVisible = false;
       load();
     } else {
@@ -189,15 +190,15 @@ const saveCourse = () => {
 
 const handleEdit = (row) => {
   data.form = JSON.parse(JSON.stringify(row));
-  data.isAddBoxVisible = true;
+  data.isAddBoxVisible = false;
 }
 
 
 const handleDelete = (id) => {
-  ElMessageBox.confirm("Will permanently delete the course. Continue?", "Confirm", { type: 'warning' }).then(() => {
-    request.put('course/pseudo-delete/'+id).then(res => {
+  ElMessageBox.confirm("Will permanently delete the student account. Continue?", "Confirm", { type: 'warning' }).then(() => {
+    request.put('student/pseudo-delete/'+id).then(res => {
       if (res.code === '200') {
-        ElMessage.success("Course Deleted!");
+        ElMessage.success("Student Account Deleted!");
         load();
       } else {
         ElMessage.error(res.msg);

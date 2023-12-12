@@ -72,4 +72,8 @@ public class StudentService {
 
         return PageInfo.of(studentList);
     }
+
+    public void pseudoDeleteById(Integer id) {
+        studentMapper.pseudoDeleteById(id);
+    }
 }

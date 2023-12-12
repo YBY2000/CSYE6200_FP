@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Result;
 import com.example.entity.Student;
 import com.example.service.StudentService;
@@ -18,6 +19,14 @@ public class StudentController {
 
     @PostMapping("/add")
     public Result add(@RequestBody Student student) {
+        if (ObjectUtil.isEmpty(student.getUsername()) ||
+                ObjectUtil.isEmpty(student.getPassword()) ||
+                ObjectUtil.isEmpty(student.getLastName()) ||
+                ObjectUtil.isEmpty(student.getFirstName()) ||
+                ObjectUtil.isEmpty(student.getEmail()) ||
+                ObjectUtil.isEmpty(student.getGender())){
+            return Result.error("Fill in all area!");
+        }
         studentService.add(student);
         return Result.success();
     }
@@ -28,11 +37,22 @@ public class StudentController {
         return Result.success();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update")
     public Result update(@RequestBody Student student){
         studentService.updateById(student);
         return Result.success();
 
+    }
+
+    /**
+     * use this pseudo delete normally
+     * @param id the data id
+     * @return succeed message
+     */
+    @PutMapping("/pseudo-delete/{id}")
+    public Result pseudoDelete(@PathVariable Integer id) {
+        studentService.pseudoDeleteById(id);
+        return Result.success();
     }
 
     @GetMapping("/selectPage")

@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Result;
 import com.example.entity.Course;
 import com.example.service.CourseService;
@@ -27,6 +28,18 @@ public class CourseController {
 
     @PostMapping("/add")
     public Result add(@RequestBody Course course) {
+        if (ObjectUtil.isEmpty(course.getCampus()) ||
+                ObjectUtil.isEmpty(course.getDescription()) ||
+                ObjectUtil.isEmpty(course.getHours()) ||
+                ObjectUtil.isEmpty(course.getLocation()) ||
+                ObjectUtil.isEmpty(course.getNumber()) ||
+                ObjectUtil.isEmpty(course.getSection()) ||
+                ObjectUtil.isEmpty(course.getTimetable()) ||
+                ObjectUtil.isEmpty(course.getInstructor()) ||
+                ObjectUtil.isEmpty(course.getTitle()) ||
+                ObjectUtil.isEmpty(course.getSubject())){
+            return Result.error("Fill in all area!");
+        }
         courseService.add(course);
         return Result.success();
     }

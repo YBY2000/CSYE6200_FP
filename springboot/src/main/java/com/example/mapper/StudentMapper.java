@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface StudentMapper {
 
-    @Select("select * from student where username = #{username}")
+    @Select("select * from student where username = #{username} and status=1")
     Student selectByUsername(String username);
 
-    @Select("select * from student where email = #{email}")
+    @Select("select * from student where email = #{email} and status=1")
     Student selectByEmail(String email);
 
     @Insert("insert into student (username, password, firstName, lastName, email, gender, avatar, role) " +
@@ -28,7 +28,11 @@ public interface StudentMapper {
             " where id=#{id}")
     void updateById(Student student);
 
-    @Select("select * from student where username like concat('%', #{username}, '%') and email like concat('%', #{email},'%')")
+    @Select("select * from student where username like concat('%', #{username}, '%')" +
+            " and firstName like concat('%', #{firstName},'%') and lastName like concat('%', #{lastName},'%') and status=1")
     List<Student> selectAll(Student student);
+
+    @Update("update student set status=0 where id = #{id}")
+    void pseudoDeleteById(Integer id);
 
 }
