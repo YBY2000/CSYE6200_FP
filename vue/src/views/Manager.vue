@@ -20,7 +20,7 @@
             router
             style="border: none"
             :default-active="$route.path"
-            :default-openeds="['/home', '2']"
+            :default-openeds="['/home', '2', '3']"
         >
           <el-menu-item index="/home">
             <el-icon><HomeFilled /></el-icon>
@@ -36,6 +36,18 @@
               <span>Course Information</span>
             </el-menu-item>
           </el-sub-menu>
+
+          <el-sub-menu index="3">
+            <template #title>
+              <el-icon><User /></el-icon>
+              <span>User Management</span>
+            </template>
+            <el-menu-item index="/student">
+              <el-icon><UserFilled /></el-icon>
+              <span>Student Information</span>
+            </el-menu-item>
+          </el-sub-menu>
+
           <el-menu-item index="/person">
             <el-icon><User /></el-icon>
             <span>User Profile</span>

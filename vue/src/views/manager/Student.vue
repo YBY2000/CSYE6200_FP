@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="card" style="margin-bottom: 10px">
-      <el-input v-model="data.courseNum" class="search_input" placeholder="by course No." :prefix-icon="Search"/>
-      <el-input v-model="data.subject" class="search_input" placeholder="by subject" :prefix-icon="Search"/>
-      <el-input v-model="data.campus" class="search_input" placeholder="by campus" :prefix-icon="Search"/>
+      <el-input v-model="data.username" class="search_input" placeholder="search by username" :prefix-icon="Search"/>
+<!--      <el-input v-model="data.lastName" class="search_input" placeholder="search by last name" :prefix-icon="Search"/>-->
+      <el-input v-model="data.email" class="search_input" placeholder="search by email" :prefix-icon="Search"/>
       <el-button style="margin-left: 10px" type="primary" @click="load">Search</el-button>
       <el-button style="margin: 0 10px" type="info" @click="reset">Reset</el-button>
     </div>
@@ -14,17 +14,14 @@
       </div>
 
       <div>
-        <el-table :data="data.courseData" style="width: 100%">
-          <el-table-column fixed prop="number" label="Course Number" width="125"/>
-          <el-table-column prop="title" label="Title" width="170"/>
-          <el-table-column prop="instructor" label="Instructor" width="130"/>
-          <el-table-column prop="section" label="Section" width="100"/>
-          <el-table-column prop="subject" label="Subject" width="120"/>
-          <el-table-column prop="campus" label="Campus" width="100"/>
-          <el-table-column prop="hours" label="Hours" width="80"/>
-          <el-table-column prop="description" label="Description" style="overflow: scroll" width="400"/>
-          <el-table-column prop="location" label="Location" width="250"/>
-          <el-table-column prop="timetable" label="Scheduled" width="200"/>
+        <el-table :data="data.studentData" style="width: 100%">
+          <el-table-column fixed prop="id" label="id" width="80"/>
+          <el-table-column prop="username" label="username" width="170"/>
+          <el-table-column prop="firstName" label="First name" width="150"/>
+          <el-table-column prop="lastName" label="Last name" width="150"/>
+          <el-table-column prop="email" label="Email" width="200"/>
+          <el-table-column prop="gender" label="Gender" width="100"/>
+          <el-table-column prop="avatar" label="Avatar" width="150"/>
           <el-table-column fixed="right" label="Operation" width="200">
             <template #default="scope">
               <el-button type="primary" plain @click="handleEdit(scope.row)">Edit</el-button>
@@ -136,20 +133,16 @@ const handleCurrentChange = (pageNum) => {
 }
 
 const reset = () => {
-  data.keyword = "";
-  data.courseNum = "";
-  data.title = "";
-  data.instructor = "";
-  data.subject = "";
-  data.campus = "";
+  data.username = "";
+  data.email = "";
   load();
 }
 
 const data = reactive({
-  courseNum: '',
-  subject: '',
-  campus: '',
-  courseData: [],
+  username: '',
+  // lastName: '',
+  email: '',
+  studentData: [],
   total: 0,
   pageNum: 1, // current page number
   pageSize: 5, // current page size
@@ -158,16 +151,16 @@ const data = reactive({
 })
 
 const load = () => {
-  request.get('/course/selectPage', {
+  request.get('/student/selectPage', {
     params: {
       pageNum: data.pageNum,
       pageSize: data.pageSize,
-      courseNum: data.courseNum,
-      subject: data.subject,
-      campus: data.campus,
+      username: data.username,
+      email: data.email,
+      // lastName: data.lastName,
     }
   }).then(res => {
-    data.courseData = res.data?.list || [];
+    data.studentData = res.data?.list || [];
     data.total = res.data?.total || 0;
   })
 }

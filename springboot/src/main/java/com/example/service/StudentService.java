@@ -5,9 +5,12 @@ import com.example.entity.Account;
 import com.example.entity.Student;
 import com.example.exception.CustomException;
 import com.example.mapper.StudentMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -35,6 +38,10 @@ public class StudentService {
     }
 
     public void signup(Student student) {
+        this.add(student);
+    }
+
+    public void add(Student student){
         Student dbStudent1 = studentMapper.selectByEmail(student.getEmail());
         if (dbStudent1 != null) {
             // account (username) already exist
@@ -48,5 +55,21 @@ public class StudentService {
         student.setAvatar("vue/src/assets/imgs/avatar.png");
         student.setRole(RoleEnum.STUDENT.name());
         studentMapper.insert(student);
+
+    }
+
+    public void deleteById(Integer id) {
+        studentMapper.delete(id);
+    }
+
+    public void updateById(Student student) {
+        studentMapper.updateById(student);
+    }
+
+    public PageInfo<Student> selectPage(Integer pageNum, Integer pageSize, Student student) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Student> studentList = studentMapper.selectAll(student);
+
+        return PageInfo.of(studentList);
     }
 }

@@ -28,12 +28,12 @@
             </el-radio-group>
           </el-form-item>
           <!-- first name -->
-          <el-form-item label="First Name" prop="first_name">
-            <el-input v-model="data.form.first_name" placeholder="Please enter first name" class="input_area"/>
+          <el-form-item label="First Name" prop="firstName">
+            <el-input v-model="data.form.firstName" placeholder="Please enter first name" class="input_area"/>
           </el-form-item>
           <!-- last name -->
-          <el-form-item label="Last Name" prop="last_name">
-            <el-input v-model="data.form.last_name" placeholder="Please enter last name" class="input_area"/>
+          <el-form-item label="Last Name" prop="lastName">
+            <el-input v-model="data.form.lastName" placeholder="Please enter last name" class="input_area"/>
           </el-form-item>
           <!-- signup button-->
           <el-form-item>
@@ -107,10 +107,10 @@ const rules = reactive({
   password: [
     {required: true, message: 'Please input Password', trigger: 'blur'},
   ],
-  first_name: [
+  firstName: [
     {required: true, message: 'Please input Password', trigger: 'blur'},
   ],
-  last_name: [
+  lastName: [
     {required: true, message: 'Please input Password', trigger: 'blur'},
   ],
   email: [

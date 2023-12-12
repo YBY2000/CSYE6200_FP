@@ -52,8 +52,8 @@ public class WebController {
     public Result signup(@RequestBody Student student) {
         if (ObjectUtil.isEmpty(student.getUsername()) ||
                 ObjectUtil.isEmpty(student.getPassword()) ||
-                ObjectUtil.isEmpty(student.getLast_name()) ||
-                ObjectUtil.isEmpty(student.getFirst_name()) ||
+                ObjectUtil.isEmpty(student.getLastName()) ||
+                ObjectUtil.isEmpty(student.getFirstName()) ||
                 ObjectUtil.isEmpty(student.getEmail()) ||
                 ObjectUtil.isEmpty(student.getGender())){
             return Result.error("Fill in all area!");
