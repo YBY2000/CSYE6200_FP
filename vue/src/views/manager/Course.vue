@@ -174,6 +174,7 @@ const load = () => {
 load();
 
 const showDialog = () => {
+  data.form = {};
   data.isAddBoxVisible = true;
 }
 

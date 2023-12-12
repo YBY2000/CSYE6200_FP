@@ -63,6 +63,17 @@ public class StudentService {
     }
 
     public void updateById(Student student) {
+        Student dbStudent1 = studentMapper.selectByUsername(student.getUsername());
+        Student dbStudent2 = studentMapper.selectById(student.getId());
+        if (dbStudent1 != null && !dbStudent2.getUsername().equals(student.getUsername()) ) {
+            // account (username) already exist
+            throw new CustomException("Username already exists!");
+        }
+        Student dbStudent3 = studentMapper.selectByEmail(student.getEmail());
+        if (dbStudent3 != null && !dbStudent2.getEmail().equals(student.getEmail()) ) {
+            // account (username) already exist
+            throw new CustomException("Email already exists!");
+        }
         studentMapper.updateById(student);
     }
 

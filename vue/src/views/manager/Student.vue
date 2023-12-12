@@ -78,9 +78,9 @@
 
         <el-form-item label="Gender" prop="resource">
           <el-radio-group v-model="data.form.gender">
-            <el-radio label="Male"/>
-            <el-radio label="Female"/>
-            <el-radio label="Other"/>
+            <el-radio label="Male" value="Male"/>
+            <el-radio label="Female" value="Female"/>
+            <el-radio label="Other" value="Other"/>
           </el-radio-group>
         </el-form-item>
         <!-- Course Description-->
@@ -190,7 +190,7 @@ const saveStudent = () => {
 
 const handleEdit = (row) => {
   data.form = JSON.parse(JSON.stringify(row));
-  data.isAddBoxVisible = false;
+  data.isAddBoxVisible = true;
 }
 
 

@@ -16,6 +16,9 @@ public interface StudentMapper {
     @Select("select * from student where email = #{email} and status=1")
     Student selectByEmail(String email);
 
+    @Select("select * from student where id = #{id} and status=1")
+    Student selectById(Integer id);
+
     @Insert("insert into student (username, password, firstName, lastName, email, gender, avatar, role) " +
             "values (#{username}, #{password}, #{firstName}, #{lastName}, #{email}, #{gender}, #{avatar}, #{role})")
     void insert(Student student);
@@ -23,9 +26,8 @@ public interface StudentMapper {
     @Delete("delete from student where id=#{id}")
     void delete(Integer id);
 
-    @Update("update student set username=#{username}, firstName=#{firstName}," +
-            "lastName=#{lastName}, phone=#{phone}, gender=#{gender}, avatar={avatar}" +
-            " where id=#{id}")
+    @Update("update student set username=#{username}, password=#{password}, firstName=#{firstName}, lastName=#{lastName}, " +
+            "email=#{email}, phone=#{phone}, gender=#{gender}, avatar=#{avatar} where id=#{id}")
     void updateById(Student student);
 
     @Select("select * from student where username like concat('%', #{username}, '%')" +
