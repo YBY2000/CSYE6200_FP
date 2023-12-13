@@ -12,7 +12,7 @@ public interface ExerciseMapper {
 
     @Select("select * from exercise where title like concat('%',#{title}, '%') " +
             "and targetMuscle like concat('%',#{targetMuscle}, '%') " +
-            "and difficultyLevel like concat('%',#{difficultyLevel}, '%') and status=1 order by id asc")
+            "and difficultyLevel like concat('%',#{difficultyLevel}, '%') order by id asc")
     List<Exercise> selectAll(String title, String targetMuscle, String difficultyLevel);
 
     @Insert("insert into exercise (title, targetMuscle, equipment, description, difficultyLevel, repetitionRange)" +
