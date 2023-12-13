@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="card" style="margin-bottom: 10px">
-      <el-input v-model="data.courseNum" class="search_input" placeholder="by course No." :prefix-icon="Search"/>
-      <el-input v-model="data.subject" class="search_input" placeholder="by subject" :prefix-icon="Search"/>
-      <el-input v-model="data.campus" class="search_input" placeholder="by campus" :prefix-icon="Search"/>
+      <el-input v-model="data.title" class="search_input" placeholder="by title" :prefix-icon="Search"/>
+      <el-input v-model="data.targetMuscle" class="search_input" placeholder="by target muscle" :prefix-icon="Search"/>
+      <el-input v-model="data.difficultyLevel" class="search_input" placeholder="by difficulty level" :prefix-icon="Search"/>
       <el-button style="margin-left: 10px" type="primary" @click="load">Search</el-button>
       <el-button style="margin: 0 10px" type="info" @click="reset">Reset</el-button>
     </div>
@@ -14,17 +14,14 @@
       </div>
 
       <div>
-        <el-table :data="data.courseData" style="width: 100%">
-          <el-table-column fixed prop="number" label="Course Number" width="125"/>
-          <el-table-column prop="title" label="Title" width="170"/>
-          <el-table-column prop="instructor" label="Instructor" width="130"/>
-          <el-table-column prop="section" label="Section" width="100"/>
-          <el-table-column prop="subject" label="Subject" width="120"/>
-          <el-table-column prop="campus" label="Campus" width="100"/>
-          <el-table-column prop="hours" label="Hours" width="80"/>
-          <el-table-column prop="description" label="Description" style="overflow: scroll" width="400"/>
-          <el-table-column prop="location" label="Location" width="250"/>
-          <el-table-column prop="timetable" label="Scheduled" width="200"/>
+        <el-table :data="data.exerciseData" style="width: 100%">
+          <el-table-column fixed prop="id" label="ID" width="85"/>
+          <el-table-column prop="title" label="Title" width="200"/>
+          <el-table-column prop="targetMuscle" label="targetMuscle" width="170"/>
+          <el-table-column prop="equipment" label="equipment" width="100"/>
+          <el-table-column prop="description" label="description" width="250"/>
+          <el-table-column prop="difficultyLevel" label="difficultyLevel" width="150"/>
+          <el-table-column prop="repetitionRange" label="repetitionRange" width="180"/>
           <el-table-column fixed="right" label="Operation" width="200">
             <template #default="scope">
               <el-button type="primary" plain @click="handleEdit(scope.row)">Edit</el-button>
@@ -39,7 +36,7 @@
       <el-pagination
           v-model:current-page="data.pageNum"
           v-model:page-size="data.pageSize"
-          :page-sizes="[5, 10, 20, 50]"
+          :page-sizes="[5, 10, 20]"
           :small="small"
           :disabled="disabled"
           :background="background"
@@ -51,53 +48,37 @@
     </div>
 
 
-    <el-dialog width="35%" v-model="data.isAddBoxVisible" title="Add new course">
-      <el-form :model="data.form" label-width="100px" style="padding-right: 30px">
-        <!-- Course Title-->
+    <el-dialog width="40%" v-model="data.isAddBoxVisible" title="Add new exercise">
+      <el-form :model="data.form" label-width="130px" style="padding-right: 30px">
+        <!-- Exercise Title-->
         <el-form-item label="Title">
           <el-input v-model="data.form.title" autocomplete="off"/>
         </el-form-item>
-        <!-- Course Number-->
-        <el-form-item label="Number">
-          <el-input v-model="data.form.number" autocomplete="off"/>
+        <!-- Target Muscle -->
+        <el-form-item label="Target Muscle">
+          <el-input v-model="data.form.targetMuscle" autocomplete="off"/>
         </el-form-item>
-        <!-- Course Instructor-->
-        <el-form-item label="Instructor">
-          <el-input v-model="data.form.instructor" autocomplete="off"/>
+        <!-- Equipment-->
+        <el-form-item label="Equipment">
+          <el-input v-model="data.form.equipment" autocomplete="off"/>
         </el-form-item>
-        <!-- Course Section-->
-        <el-form-item label="Section">
-          <el-input v-model="data.form.section" autocomplete="off"/>
-        </el-form-item>
-        <!-- Course Subject-->
-        <el-form-item label="Subject">
-          <el-input v-model="data.form.subject" autocomplete="off"/>
-        </el-form-item>
-        <!-- Campus -->
-        <el-form-item label="Campus">
-          <el-input v-model="data.form.campus" autocomplete="off"/>
-        </el-form-item>
-        <!-- Credit Hours -->
-        <el-form-item label="Hours">
-          <el-input v-model="data.form.hours" autocomplete="off"/>
-        </el-form-item>
-        <!-- Course Description-->
+        <!-- Description-->
         <el-form-item label="Description">
           <el-input v-model="data.form.description" autocomplete="off"/>
         </el-form-item>
-        <!-- Course Location -->
-        <el-form-item label="Location">
-          <el-input v-model="data.form.location" autocomplete="off"/>
+        <!-- Difficulty Level-->
+        <el-form-item label="Difficulty Level">
+          <el-input v-model="data.form.difficultyLevel" autocomplete="off"/>
         </el-form-item>
-        <!-- Course Timetable -->
-        <el-form-item label="Timetable">
-          <el-input v-model="data.form.timetable" autocomplete="off"/>
+        <!-- Repetition Range -->
+        <el-form-item label="Repetition Range">
+          <el-input v-model="data.form.repetitionRange" autocomplete="off"/>
         </el-form-item>
       </el-form>
       <template #footer>
           <span class="dialog-footer">
             <el-button @click="data.isAddBoxVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="saveCourse">
+            <el-button type="primary" @click="saveExercise">
               Save
             </el-button>
           </span>
@@ -136,20 +117,17 @@ const handleCurrentChange = (pageNum) => {
 }
 
 const reset = () => {
-  data.keyword = "";
-  data.courseNum = "";
   data.title = "";
-  data.instructor = "";
-  data.subject = "";
-  data.campus = "";
+  data.targetMuscle = "";
+  data.difficultyLevel = "";
   load();
 }
 
 const data = reactive({
-  courseNum: '',
-  subject: '',
-  campus: '',
-  courseData: [],
+  title: '',
+  targetMuscle: '',
+  difficultyLevel: '',
+  exerciseData: [],
   total: 0,
   pageNum: 1, // current page number
   pageSize: 5, // current page size
@@ -158,16 +136,16 @@ const data = reactive({
 })
 
 const load = () => {
-  request.get('/course/selectPage', {
+  request.get('/exercise/selectPage', {
     params: {
       pageNum: data.pageNum,
       pageSize: data.pageSize,
-      courseNum: data.courseNum,
-      subject: data.subject,
-      campus: data.campus,
+      title: data.title,
+      targetMuscle: data.targetMuscle,
+      difficultyLevel: data.difficultyLevel,
     }
   }).then(res => {
-    data.courseData = res.data?.list || [];
+    data.exerciseData = res.data?.list || [];
     data.total = res.data?.total || 0;
   })
 }
@@ -179,14 +157,14 @@ const showDialog = () => {
 }
 
 // save data to database (include add and update)
-const saveCourse = () => {
+const saveExercise = () => {
   request.request({
-    url: data.form.id ? '/course/update' : '/course/add',
+    url: data.form.id ? '/exercise/update' : '/exercise/add',
     method: data.form.id ? 'PUT' : 'POST',
     data: data.form
   }).then(res => {
     if (res.code === '200') {
-      ElMessage.success("Course Saved!");
+      ElMessage.success("Exercise Saved!");
       data.isAddBoxVisible = false;
       load();
     } else {
@@ -202,10 +180,10 @@ const handleEdit = (row) => {
 
 
 const handleDelete = (id) => {
-  ElMessageBox.confirm("Will permanently delete the course. Continue?", "Confirm", { type: 'warning' }).then(() => {
-    request.put('course/pseudo-delete/'+id).then(res => {
+  ElMessageBox.confirm("Will permanently delete the exercise. Continue?", "Confirm", { type: 'warning' }).then(() => {
+    request.put('exercise/pseudo-delete/'+id).then(res => {
       if (res.code === '200') {
-        ElMessage.success("Course Deleted!");
+        ElMessage.success("Exercise Deleted!");
         load();
       } else {
         ElMessage.error(res.msg);

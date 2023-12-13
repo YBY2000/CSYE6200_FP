@@ -18,7 +18,7 @@
           <!-- role -->
           <el-form-item prop="role">
             <el-radio-group v-model="data.form.role" style="margin: 10px auto">
-              <el-radio value="STUDENT" label="STUDENT" size="large">Student</el-radio>
+              <el-radio value="USER" label="USER" size="large">User</el-radio>
               <el-radio value="ADMIN" label="ADMIN" size="large">Admin</el-radio>
             </el-radio-group>
           </el-form-item>
@@ -104,7 +104,7 @@ const login = () => {
     if (valid) {
       request.post('/login', data.form).then(res => {
         if (res.code === '200') {
-          localStorage.setItem('student-user', JSON.stringify(res.data));
+          localStorage.setItem('login-user', JSON.stringify(res.data));
           ElMessage.success('Login Succeed!');
           router.push('/home');    // go to home page
         } else {

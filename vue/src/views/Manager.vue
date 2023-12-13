@@ -4,7 +4,7 @@
       <div style="flex: 1">
         <div style="padding-left: 20px; display: flex; align-items: center">
           <img src="@/assets/imgs/logo.png" alt="" style="width: 40px">
-          <div style="font-weight: bold; font-size: 24px; margin-left: 5px">Student Grade Management System</div>
+          <div style="font-weight: bold; font-size: 24px; margin-left: 5px">User Grade Management System</div>
         </div>
       </div>
       <div style="width: fit-content; padding-right: 10px; display: flex; align-items: center;">
@@ -28,11 +28,11 @@
           <el-sub-menu index="2">
             <template #title>
               <el-icon><Memo /></el-icon>
-              <span>Course Management</span>
+              <span>Exercise Management</span>
             </template>
-            <el-menu-item index="/course">
+            <el-menu-item index="/exercise">
               <el-icon><Document /></el-icon>
-              <span>Course Information</span>
+              <span>Exercise Information</span>
             </el-menu-item>
           </el-sub-menu>
 
@@ -41,9 +41,9 @@
               <el-icon><User /></el-icon>
               <span>User Management</span>
             </template>
-            <el-menu-item index="/student">
+            <el-menu-item index="/user">
               <el-icon><UserFilled /></el-icon>
-              <span>Student Information</span>
+              <span>User Information</span>
             </el-menu-item>
           </el-sub-menu>
 
@@ -69,10 +69,10 @@
 <script setup>
 import { useRoute } from 'vue-router'
 const $route = useRoute()
-const user = JSON.parse(localStorage.getItem('student-user') || '{}')
+const user = JSON.parse(localStorage.getItem('login-user') || '{}')
 
 const logout = () => {
-  localStorage.removeItem('student-user')
+  localStorage.removeItem('login-user')
 }
 </script>
 

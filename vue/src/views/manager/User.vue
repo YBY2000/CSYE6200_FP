@@ -15,7 +15,7 @@
       </div>
 
       <div>
-        <el-table :data="data.studentData" style="width: 100%">
+        <el-table :data="data.userData" style="width: 100%">
           <el-table-column fixed prop="id" label="id" width="80"/>
           <el-table-column prop="username" label="username" width="170"/>
           <el-table-column prop="firstName" label="First name" width="150"/>
@@ -49,25 +49,25 @@
     </div>
 
 
-    <el-dialog width="35%" v-model="data.isAddBoxVisible" title="Add student account">
+    <el-dialog width="35%" v-model="data.isAddBoxVisible" title="Add user account">
       <el-form :model="data.form" label-width="100px" style="padding-right: 30px">
-        <!-- Student Username-->
+        <!-- Username-->
         <el-form-item label="Username">
           <el-input v-model="data.form.username" autocomplete="off"/>
         </el-form-item>
-        <!-- Student Password-->
+        <!-- Password-->
         <el-form-item label="Password">
           <el-input show-password v-model="data.form.password" autocomplete="off"/>
         </el-form-item>
-        <!-- Student First Name-->
+        <!-- First Name-->
         <el-form-item label="First Name">
           <el-input v-model="data.form.firstName" autocomplete="off"/>
         </el-form-item>
-        <!-- Student Last Name-->
+        <!-- Last Name-->
         <el-form-item label="Last Name">
           <el-input v-model="data.form.lastName" autocomplete="off"/>
         </el-form-item>
-        <!-- Student Email-->
+        <!-- Email-->
         <el-form-item label="Email">
           <el-input v-model="data.form.email" autocomplete="off"/>
         </el-form-item>
@@ -83,7 +83,7 @@
             <el-radio label="Other" value="Other"/>
           </el-radio-group>
         </el-form-item>
-        <!-- Course Description-->
+        <!-- Avatar -->
         <el-form-item label="Avatar">
           <el-input v-model="data.form.avatar" autocomplete="off"/>
         </el-form-item>
@@ -91,7 +91,7 @@
       <template #footer>
           <span class="dialog-footer">
             <el-button @click="data.isAddBoxVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="saveStudent">
+            <el-button type="primary" @click="saveUser">
               Save
             </el-button>
           </span>
@@ -142,7 +142,7 @@ const data = reactive({
   firstName: '',
   lastName: '',
   email: '',
-  studentData: [],
+  userData: [],
   total: 0,
   pageNum: 1, // current page number
   pageSize: 5, // current page size
@@ -151,7 +151,7 @@ const data = reactive({
 })
 
 const load = () => {
-  request.get('/student/selectPage', {
+  request.get('/user/selectPage', {
     params: {
       pageNum: data.pageNum,
       pageSize: data.pageSize,
@@ -161,7 +161,7 @@ const load = () => {
       lastName: data.lastName,
     }
   }).then(res => {
-    data.studentData = res.data?.list || [];
+    data.userData = res.data?.list || [];
     data.total = res.data?.total || 0;
   })
 }
@@ -172,14 +172,14 @@ const showDialog = () => {
 }
 
 // save data to database (include add and update)
-const saveStudent = () => {
+const saveUser = () => {
   request.request({
-    url: data.form.id ? '/student/update' : '/student/add',
+    url: data.form.id ? '/user/update' : '/user/add',
     method: data.form.id ? 'PUT' : 'POST',
     data: data.form
   }).then(res => {
     if (res.code === '200') {
-      ElMessage.success("Student Account Saved!");
+      ElMessage.success("User Account Saved!");
       data.isAddBoxVisible = false;
       load();
     } else {
@@ -195,10 +195,10 @@ const handleEdit = (row) => {
 
 
 const handleDelete = (id) => {
-  ElMessageBox.confirm("Will permanently delete the student account. Continue?", "Confirm", { type: 'warning' }).then(() => {
-    request.put('student/pseudo-delete/'+id).then(res => {
+  ElMessageBox.confirm("Will permanently delete the user account. Continue?", "Confirm", { type: 'warning' }).then(() => {
+    request.put('user/pseudo-delete/'+id).then(res => {
       if (res.code === '200') {
-        ElMessage.success("Student Account Deleted!");
+        ElMessage.success("User Account Deleted!");
         load();
       } else {
         ElMessage.error(res.msg);

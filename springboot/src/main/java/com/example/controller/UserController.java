@@ -2,44 +2,44 @@ package com.example.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Result;
-import com.example.entity.Student;
-import com.example.service.StudentService;
+import com.example.entity.User;
+import com.example.service.UserService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/student")
-public class StudentController {
+@RequestMapping("/user")
+public class UserController {
 
     @Resource
-    StudentService studentService;
+    UserService userService;
 
 
     @PostMapping("/add")
-    public Result add(@RequestBody Student student) {
-        if (ObjectUtil.isEmpty(student.getUsername()) ||
-                ObjectUtil.isEmpty(student.getPassword()) ||
-                ObjectUtil.isEmpty(student.getLastName()) ||
-                ObjectUtil.isEmpty(student.getFirstName()) ||
-                ObjectUtil.isEmpty(student.getEmail()) ||
-                ObjectUtil.isEmpty(student.getGender())){
+    public Result add(@RequestBody User user) {
+        if (ObjectUtil.isEmpty(user.getUsername()) ||
+                ObjectUtil.isEmpty(user.getPassword()) ||
+                ObjectUtil.isEmpty(user.getLastName()) ||
+                ObjectUtil.isEmpty(user.getFirstName()) ||
+                ObjectUtil.isEmpty(user.getEmail()) ||
+                ObjectUtil.isEmpty(user.getGender())){
             return Result.error("Fill in all area!");
         }
-        studentService.add(student);
+        userService.add(user);
         return Result.success();
     }
 
     @DeleteMapping("/delete/{id}")
     public Result delete(@PathVariable Integer id) {
-        studentService.deleteById(id);
+        userService.deleteById(id);
         return Result.success();
     }
 
     @PutMapping("/update")
-    public Result update(@RequestBody Student student){
-        studentService.updateById(student);
+    public Result update(@RequestBody User user){
+        userService.updateById(user);
         return Result.success();
 
     }
@@ -51,15 +51,15 @@ public class StudentController {
      */
     @PutMapping("/pseudo-delete/{id}")
     public Result pseudoDelete(@PathVariable Integer id) {
-        studentService.pseudoDeleteById(id);
+        userService.pseudoDeleteById(id);
         return Result.success();
     }
 
     @GetMapping("/selectPage")
     public Result selectPage(@RequestParam(defaultValue = "1")Integer pageNum,
                              @RequestParam(defaultValue = "5")Integer pageSize,
-                             Student student){
-        PageInfo<Student> pageInfo = studentService.selectPage(pageNum, pageSize, student);
+                             User user){
+        PageInfo<User> pageInfo = userService.selectPage(pageNum, pageSize, user);
         return Result.success(pageInfo);
 
     }
