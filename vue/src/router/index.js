@@ -22,6 +22,9 @@ const router = createRouter({
         { path: 'home', name: 'Home', component: () => import('@/views/manager/Home.vue')},
         { path: 'exercise', name: 'Exercise', component: () => import('@/views/manager/Exercise.vue')},
         { path: 'user', name: 'User', component: () => import('@/views/manager/User.vue')},
+        { path: 'profile', name: 'Profile', component: () => import('@/views/manager/Profile.vue')},
+        { path: 'exerciseList', name: 'ExerciseList', component: () => import('@/views/manager/ExerciseList.vue')},
+        { path: 'userSelected', name: 'UserSelected', component: () => import('@/views/manager/UseSelected.vue')},
       ]
     },
     {
