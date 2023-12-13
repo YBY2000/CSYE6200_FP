@@ -22,7 +22,12 @@
           <el-table-column prop="lastName" label="Last name" width="150"/>
           <el-table-column prop="email" label="Email" width="200"/>
           <el-table-column prop="gender" label="Gender" width="100"/>
-          <el-table-column prop="avatar" label="Avatar" width="150"/>
+          <el-table-column prop="avatar" label="Avatar" width="150">
+            <template #default="scope">
+              <el-image v-if="scope.row.avatar" :src="scope.row.avatar" preview-src-list="[scope.row.avatar"
+                        style="width: 40px;height: 40px;border-radius: 5px"></el-image>
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="Operation" width="200">
             <template #default="scope">
               <el-button type="primary" plain @click="handleEdit(scope.row)">Edit</el-button>
@@ -49,7 +54,7 @@
     </div>
 
 
-    <el-dialog width="35%" v-model="data.isAddBoxVisible" title="Add user account">
+    <el-dialog width="35%" v-model="data.isAddBoxVisible" title="Add user account" distroy-on-closed>
       <el-form :model="data.form" label-width="100px" style="padding-right: 30px">
         <!-- Username-->
         <el-form-item label="Username">
@@ -75,7 +80,7 @@
         <el-form-item label="Phone">
           <el-input v-model="data.form.phone" autocomplete="off"/>
         </el-form-item>
-
+        <!-- Gender -->
         <el-form-item label="Gender" prop="resource">
           <el-radio-group v-model="data.form.gender">
             <el-radio label="Male" value="Male"/>
@@ -85,7 +90,7 @@
         </el-form-item>
         <!-- Avatar -->
         <el-form-item label="Avatar">
-          <el-input v-model="data.form.avatar" autocomplete="off"/>
+          <el-input v-model="data.form.avatar" autocomplete="off" placeholder="Please input a valid url !"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -195,8 +200,8 @@ const handleEdit = (row) => {
 
 
 const handleDelete = (id) => {
-  ElMessageBox.confirm("Will permanently delete the user account. Continue?", "Confirm", { type: 'warning' }).then(() => {
-    request.put('user/pseudo-delete/'+id).then(res => {
+  ElMessageBox.confirm("Will permanently delete the user account. Continue?", "Confirm", {type: 'warning'}).then(() => {
+    request.put('user/pseudo-delete/' + id).then(res => {
       if (res.code === '200') {
         ElMessage.success("User Account Deleted!");
         load();
