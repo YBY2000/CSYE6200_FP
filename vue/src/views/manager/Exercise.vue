@@ -11,6 +11,7 @@
     <div class="card">
       <div style="margin-bottom: 20px">
         <el-button type="primary" @click="showDialog">Add</el-button>
+        <el-button type="info" @click="showUploadDialog">Upload CSV</el-button>
       </div>
 
       <div>
@@ -30,6 +31,7 @@
           </el-table-column>
         </el-table>
       </div>
+
     </div>
 
     <div class="card">
@@ -85,6 +87,19 @@
       </template>
     </el-dialog>
 
+    <el-dialog width="40%" v-model="data.isUploadBoxVisible" title="upload a file" distroy-on-closed>
+
+      <input type="file" ref="fileInput" @change="handleFileChange" />
+      <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="data.isUploadBoxVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="uploadFile">
+              Save
+            </el-button>
+          </span>
+      </template>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -101,7 +116,9 @@
 import {reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue';
 import request from "@/utils/request";
+import axios from "axios";
 import {ElMessage, ElMessageBox} from "element-plus";
+import router from "@/router";
 
 const small = ref(false)
 const background = ref(false)
@@ -127,11 +144,13 @@ const data = reactive({
   title: '',
   targetMuscle: '',
   difficultyLevel: '',
+  selectedFile:null,
   exerciseData: [],
   total: 0,
   pageNum: 1, // current page number
   pageSize: 5, // current page size
   isAddBoxVisible: false,
+  isUploadBoxVisible: false,
   form: {}
 })
 
@@ -154,6 +173,10 @@ load();
 const showDialog = () => {
   data.form = {};
   data.isAddBoxVisible = true;
+}
+
+const showUploadDialog = () => {
+  data.isUploadBoxVisible = true;
 }
 
 // save data to database (include add and update)
@@ -196,4 +219,30 @@ const handleDelete = (id) => {
     })
   })
 }
+const handleFileChange = (event) => {
+  data.selectedFile = event.target.files[0];
+};
+
+const uploadFile = async () => {
+  try {
+    const formData = new FormData();
+    formData.append("file", data.selectedFile);
+
+    const response = await axios.post("http://localhost:9090/excercises/csv", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (response.status === 200) {
+      ElMessage.success("File uploaded and converted successfully.");
+      data.isUploadBoxVisible = false;
+    } else {
+      ElMessage.error("Failed to upload file.");
+    }
+  } catch (error) {
+    ElMessage.error("Error uploading file.");
+    console.error(error);
+  }
+};
 </script>

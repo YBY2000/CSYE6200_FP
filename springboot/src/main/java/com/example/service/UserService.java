@@ -42,12 +42,14 @@ public class UserService {
     }
 
     public void add(User user){
-        User dbUser1 = userMapper.selectByEmail(user.getEmail());
+        User dbUser1 = User.getInstance();
+        dbUser1 = userMapper.selectByEmail(user.getEmail());
         if (dbUser1 != null) {
             // account (username) already exist
             throw new CustomException("This email has already exists!");
         }
-        User dbUser2 = userMapper.selectByUsername(user.getUsername());
+        User dbUser2 = User.getInstance();
+        dbUser2 = userMapper.selectByUsername(user.getUsername());
         if (dbUser2 != null) {
             // account (username) already exist
             throw new CustomException("Username already exists!");

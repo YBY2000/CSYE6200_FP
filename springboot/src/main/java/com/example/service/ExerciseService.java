@@ -6,6 +6,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +31,7 @@ public class ExerciseService {
         // use Stream to filter the data that not suppose to show
         List<Exercise> filteredExercises = allExercises.stream()
                 .filter(exercise -> exercise.getStatus() == 1)
+                .sorted(Comparator.comparing(Exercise::getTitle))
                 .collect(Collectors.toList());
 
         // handle pagination manually
@@ -60,5 +63,26 @@ public class ExerciseService {
 
     public void delete(Integer id) {
         exerciseMapper.delete(id);
+    }
+
+    public void addCSVExcercises(List<String> dataList) {
+
+        List<Exercise> exercises = new ArrayList<>();
+
+        System.out.println(dataList.get(0));
+        dataList.forEach(data -> {
+            String[] details = data.split(",");
+            Exercise exercise = new Exercise();
+            exercise.setTitle(details[0]);
+            exercise.setTargetMuscle(details[1]);
+            exercise.setEquipment(details[2]);
+            exercise.setDescription(details[3]);
+            exercise.setDifficultyLevel(details[4]);
+            exercise.setRepetitionRange(details[5]);
+            exercises.add(exercise);
+        });
+
+        // load all the expenses from the list
+        exercises.forEach(exercise -> add(exercise));
     }
 }

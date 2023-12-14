@@ -10,6 +10,18 @@ public class User extends Account {
     private String phone;
     private String gender;
     private String avatar;
+    private static User INSTANCE;
+
+    private User() {
+
+    }
+
+    public static User getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new User();
+        }
+        return INSTANCE;
+    }
 
     public int getId() {
         return id;
