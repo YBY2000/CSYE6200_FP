@@ -18,7 +18,7 @@
           <el-table-column prop="title" label="Title" width="200"/>
           <el-table-column label="Operation" width="200">
             <template #default="scope">
-              <el-button type="danger" @click="participateExercise(scope.row.id)">Remove</el-button>
+              <el-button type="danger" @click="removeParticipate(scope.row.id)">Remove</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -57,7 +57,7 @@
 import {reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue';
 import request from "@/utils/request";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const small = ref(false)
 const background = ref(false)
@@ -105,7 +105,21 @@ const load = () => {
 }
 load();
 
-const participateExercise = (id) => {
-  request.delete("")
+const removeParticipate = (id) => {
+  ElMessageBox.confirm("Will permanently delete. Continue?", "Confirm", {type: 'warning'}).then(() => {
+    request.delete('userParticipate/delete/' + id).then(res => {
+      if (res.code === '200') {
+        ElMessage.success("Deleted!");
+        load();
+      } else {
+        ElMessage.error(res.msg);
+      }
+    })
+  }).catch(res => {
+    ElMessage({
+      type: 'info',
+      message: 'Delete Canceled'
+    })
+  })
 }
 </script>

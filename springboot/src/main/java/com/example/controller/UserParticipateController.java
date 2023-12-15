@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.awt.*;
 
 @RestController
 @RequestMapping("/userParticipate")
@@ -28,5 +29,11 @@ public class UserParticipateController {
                              UserParticipate userParticipate) {
         PageInfo<UserParticipate> pageInfo = userParticipateService.selectPage(pageNum, pageSize, userParticipate);
         return Result.success(pageInfo);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public Result delete(@PathVariable Integer id) {
+        userParticipateService.deleteById(id);
+        return Result.success();
     }
 }

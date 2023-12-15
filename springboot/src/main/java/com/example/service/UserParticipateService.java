@@ -29,4 +29,8 @@ public class UserParticipateService {
         List<UserParticipate> list = userParticipateMapper.selectAll(userParticipate);
         return PageInfo.of(list);
     }
+
+    public void deleteById(Integer id) {
+        userParticipateMapper.deleteById(id);
+    }
 }
