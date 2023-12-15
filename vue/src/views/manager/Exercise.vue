@@ -236,6 +236,7 @@ const uploadFile = async () => {
 
     if (response.status === 200) {
       ElMessage.success("File uploaded and converted successfully.");
+      load();
       data.isUploadBoxVisible = false;
     } else {
       ElMessage.error("Failed to upload file.");
